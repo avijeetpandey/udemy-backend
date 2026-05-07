@@ -2,7 +2,6 @@ package com.avijeet.udemybackend.entities;
 
 import com.avijeet.udemybackend.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +21,6 @@ public class User {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    @Email(message = "Invalid email format")
     private String email;
 
     @Column(nullable = false)
