@@ -26,5 +26,19 @@ services:
       timeout: 5s
       retries: 5
 
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9005:9005"      # API port
+      - "9001:9001"      # Web Console port
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: udemyminioAdmin
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001" --address ":9005"
+
 volumes:
   postgres_data:
+  minio_data:
