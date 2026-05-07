@@ -1,5 +1,6 @@
 package com.avijeet.udemybackend.config.auth;
 
+import com.avijeet.udemybackend.entities.User;
 import com.avijeet.udemybackend.repository.user.UserRepository;
 import com.avijeet.udemybackend.service.auth.JwtService;
 import jakarta.servlet.FilterChain;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -30,18 +32,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String jwt = authHeader.substring(7);
-        String email = jwtService.extractEmail(jwt);
+        try {
+            String jwt = authHeader.substring(7);
+            String email = jwtService.extractEmail(jwt);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if (jwtService.isTokenValid(jwt)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        email, null, Collections.emptyList() // Add roles here if needed
-                );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                User user = userRepository.findUserByEmail(email);
+                if (user != null && jwtService.isTokenValid(jwt)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            user.getEmail(),
+                            null,
+                            Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+        } catch (Exception e) {
+            // Log the exception if needed, but do not set authentication
         }
+
         filterChain.doFilter(request, response);
     }
 }

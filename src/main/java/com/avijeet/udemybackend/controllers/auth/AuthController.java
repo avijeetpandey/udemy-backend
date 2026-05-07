@@ -1,4 +1,4 @@
-package com.avijeet.udemybackend.controllers;
+package com.avijeet.udemybackend.controllers.auth;
 
 import com.avijeet.udemybackend.dto.auth.AuthResponseDto;
 import com.avijeet.udemybackend.dto.auth.LoginRequestDto;
