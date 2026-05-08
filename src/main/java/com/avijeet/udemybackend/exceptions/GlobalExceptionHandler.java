@@ -2,6 +2,7 @@ package com.avijeet.udemybackend.exceptions;
 
 import com.avijeet.udemybackend.exceptions.course.CourseAlreadyExistsException;
 import com.avijeet.udemybackend.exceptions.course.CourseNotFoundException;
+import com.avijeet.udemybackend.exceptions.module.ModuleNotFoundException;
 import com.avijeet.udemybackend.utils.api.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ApiResponse<>(true, errors, "Validation failed"), HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<String>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return new ResponseEntity<>(new ApiResponse<>(true, null, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(CourseAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<String>> handleCourseAlreadyExistsException(CourseAlreadyExistsException ex) {
@@ -39,6 +46,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CourseNotFoundException.class)
     public ResponseEntity<ApiResponse<String>> handleCourseNotFoundException(CourseNotFoundException ex) {
+        return new ResponseEntity<>(new ApiResponse<>(true, null, ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ModuleNotFoundException.class)
+    public ResponseEntity<ApiResponse<String>> handleModuleNotFoundException(ModuleNotFoundException ex) {
         return new ResponseEntity<>(new ApiResponse<>(true, null, ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 }

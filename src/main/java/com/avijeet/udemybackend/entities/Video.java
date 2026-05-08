@@ -18,6 +18,7 @@ public class Video {
     private Long id;
 
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String minioUrl;
     private Integer orderIndex;
 

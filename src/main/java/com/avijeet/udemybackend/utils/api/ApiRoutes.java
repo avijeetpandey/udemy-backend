@@ -7,4 +7,5 @@ public class ApiRoutes {
     public static final String PROFILE_END_POINT = BASE_URL + "/profile";
     public static final String AUTH_END_POINT = BASE_URL + "/auth";
     public static final String MODULE_END_POINT = BASE_URL + "/module";
+    public static final String VIDEO_END_POINT = BASE_URL + "/video";
 }
