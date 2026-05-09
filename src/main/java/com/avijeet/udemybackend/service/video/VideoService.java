@@ -68,4 +68,13 @@ public class VideoService {
             throw new RuntimeException("An error occurred while saving the video record", e);
         }
     }
+
+    @Transactional(readOnly = true)
+    public VideoResponseDto getVideo(Long videoId) {
+        Video video = videoRepository.findById(videoId).orElseThrow(() -> {
+            log.error("Video with id {} not found", videoId);
+            return new RuntimeException("Video with id" + videoId + "not found");
+        });
+        return videoMapper.videoToVideoResponseDto(video);
+    }
 }

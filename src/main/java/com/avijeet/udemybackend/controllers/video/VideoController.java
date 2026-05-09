@@ -25,4 +25,10 @@ public class VideoController extends BaseController {
         VideoResponseDto videoResponseDto = videoService.initVideo(videoRequestDto, file);
         return ok(ApiConstants.DONE_MESSAGE, videoResponseDto);
     }
+
+    @GetMapping("/{videoId}")
+    public ResponseEntity<ApiResponse<VideoResponseDto>> getVideo(@PathVariable Long videoId) {
+        VideoResponseDto videoResponseDto = videoService.getVideo(videoId);
+        return ok(ApiConstants.DONE_MESSAGE, videoResponseDto);
+    }
 }
