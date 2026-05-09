@@ -22,8 +22,9 @@ public class VideoUploadService {
     @Value("${minio.bucketName}")
     private String bucketName;
 
-    public String uploadAndGetUrl(MultipartFile file) {
-        String objectName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+    public String uploadAndGetUrl(MultipartFile file, String moduleName) {
+        String sanitizedModuleName = moduleName.toLowerCase().replaceAll("[^a-z0-9]", "_");
+        String objectName = sanitizedModuleName + "/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
         try {
             minioClient.putObject(
                     PutObjectArgs.builder()

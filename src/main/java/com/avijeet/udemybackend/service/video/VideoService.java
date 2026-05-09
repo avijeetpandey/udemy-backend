@@ -47,7 +47,7 @@ public class VideoService {
 
         String videoUrl;
         try {
-            videoUrl = videoUploadService.uploadAndGetUrl(file);
+            videoUrl = videoUploadService.uploadAndGetUrl(file, module.getTitle());
             log.info("Successfully uploaded video to storage. URL: {}", videoUrl);
         } catch (Exception e) {
             log.error("Failed to upload video to storage: {}", e.getMessage(), e);
