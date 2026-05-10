@@ -72,7 +72,6 @@ public class VideoService {
     @Transactional(readOnly = true)
     public VideoResponseDto getVideo(Long videoId) {
         Video video = videoRepository.findById(videoId).orElseThrow(() -> {
-            log.error("Video with id {} not found", videoId);
             return new RuntimeException("Video with id" + videoId + "not found");
         });
         return videoMapper.videoToVideoResponseDto(video);
@@ -81,7 +80,6 @@ public class VideoService {
     @Transactional
     public void deleteVideo(Long videoId) {
         Video video = videoRepository.findById(videoId).orElseThrow(() -> {
-            log.error("Video with id {} not found", videoId);
             return new RuntimeException("Video with id " + videoId + "not found");
         });
         videoRepository.delete(video);
