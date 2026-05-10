@@ -31,4 +31,10 @@ public class VideoController extends BaseController {
         VideoResponseDto videoResponseDto = videoService.getVideo(videoId);
         return ok(ApiConstants.DONE_MESSAGE, videoResponseDto);
     }
+
+    @DeleteMapping("/{videoId}")
+    public ResponseEntity<ApiResponse<Void>> deleteVideo(@PathVariable Long videoId) {
+        videoService.deleteVideo(videoId);
+        return ok(ApiConstants.DONE_MESSAGE, null);
+    }
 }
