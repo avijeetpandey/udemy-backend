@@ -77,4 +77,13 @@ public class VideoService {
         });
         return videoMapper.videoToVideoResponseDto(video);
     }
+
+    @Transactional
+    public void deleteVideo(Long videoId) {
+        Video video = videoRepository.findById(videoId).orElseThrow(() -> {
+            log.error("Video with id {} not found", videoId);
+            return new RuntimeException("Video with id " + videoId + "not found");
+        });
+        videoRepository.delete(video);
+    }
 }
